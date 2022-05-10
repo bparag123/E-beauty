@@ -1,0 +1,100 @@
+version: "3.3"
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    hostname: rabbitmq
+
+    #Here the port 15672 is for the rabbitmq manager
+    #Here the port 5672 is for the queuing protocol
+    ports:
+      - 5672:5672
+      - 15672:15672
+    # This is a Volume dirrectory fo the docker
+    volumes:
+      - /var/lib/rabbitmq/
+
+    restart: on-failure
+
+    networks:
+      - e-beauty
+
+  #This is a kong Container
+  kong:
+    image: kong
+    #The config folder will be stored in the container path /usr/local/kong/declarative
+    volumes:
+      - "./config:/usr/local/kong/declarative"
+    #This is setup for the env file
+    env_file:
+      - ./kong.env
+    restart: on-failure
+    #The 8000 port of the system will be mapped to 8000 port of the container
+    ports:
+      - "8000:8000/tcp"
+      - "127.0.0.1:7990:8001/tcp"
+      - "8443:8443/tcp"
+      - "127.0.0.1:8444:8444/tcp"
+    networks:
+      - e-beauty
+
+  treatment:
+    container_name: treatment
+    image: treatment-service:1.0.0
+    build:
+      context: ./treatments
+      dockerfile: Dockerfile
+    command: npm run start:dev
+    hostname: treatment
+    ports:
+      - '3000:3000'
+    networks:
+      - e-beauty
+    env_file:
+      - ./treatments/.env
+    volumes:
+      - ./treatments:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+      - rabbitmq
+
+  mongodb:
+    #providing image to create container
+    image: mongo
+    container_name: mongodb
+    restart: on-failure
+    ports:
+      - 27018:27017
+    #This is a parsistant storage for docker
+    volumes:
+      - mongo_db:/data/db
+    networks:
+      - e-beauty
+
+  user:
+    container_name: user
+    image: user-service:1.0.0
+    hostname: user
+    build:
+      context: ./users
+      dockerfile: Dockerfile
+    command: npm run start:dev
+    ports:
+      - '4000:4000'
+    networks:
+      - e-beauty
+    env_file:
+      - ./users/.env
+    volumes:
+      - ./users:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+
+networks:
+  e-beauty:
+    name: e-beauty-network
+
+volumes:
+  mongo_db:

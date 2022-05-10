@@ -1,0 +1,22 @@
+_format_version: "2.1"
+
+#This will define all the end point for the gateway
+services:
+
+#This is the name of service
+- name: user
+  url: "http://user:4000/"
+  #Here we can provide the end points of the service we want to avail for the client
+  routes:
+  - name: user
+    paths:
+    - /user
+
+#This is the name of service
+- name: treatment
+  url: "http://treatment:3000/"
+  #Here we can provide the end points of the service we want to avail for the client
+  routes:
+  - name: treatment
+    paths:
+    - /treatment
