@@ -71,6 +71,24 @@ services:
     networks:
       - e-beauty
 
+  mailer:
+    container_name: mailer
+    image: mailer-service:1.0.0
+    hostname: mailer
+    build:
+      context: ./mailer
+      dockerfile: Dockerfile
+    
+    command: npm run start:dev
+    ports:
+      - '5000:5000'
+    networks:
+      - e-beauty
+    volumes:
+      - ./mailer:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+
   user:
     container_name: user
     image: user-service:1.0.0

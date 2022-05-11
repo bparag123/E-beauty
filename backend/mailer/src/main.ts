@@ -1,22 +1,33 @@
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-    AppModule,
-    {
-      transport: Transport.RMQ,
-      options: {
-        urls: ['amqp://guest:guest@localhost:5672'],
-        queue: 'mailer_queue',
-        queueOptions: {
-          durable: false,
-        },
+  const app = await NestFactory.create(AppModule);
+
+  const config = app.get(ConfigService);
+
+  app.connectMicroservice({
+    transport: Transport.RMQ,
+    options: {
+      queue: 'mailer_queue',
+      urls: [config.get('RABBITMQ_URI')],
+      queueOptions: {
+        durable: false,
       },
     },
-  );
-  await app.listen();
-  console.log('Mailer Service is Up and running');
+  });
+
+  try {
+    await app.startAllMicroservices();
+    console.log('Mailer Microservice Started');
+  } catch (error) {
+    console.log("Couldn't Start Mailer Microservice");
+  }
+
+  await app.listen(config.get('PORT'));
+
+  console.log(`Mailer Service is Up and Running on Port ${config.get('PORT')}`);
 }
 bootstrap();

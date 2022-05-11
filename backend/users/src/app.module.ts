@@ -1,29 +1,19 @@
 import { Module } from '@nestjs/common';
-import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { configuration } from 'config/configuration';
+import { MongooseModule } from '@nestjs/mongoose';
+import { UserModule } from './user/user.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: `${process.cwd()}/config/env/${process.env.NODE_ENV}.env`,
       load: [configuration],
+      isGlobal: true,
     }),
-    ClientsModule.register([
-      {
-        //This will be used as a Token for the Controller to Inject the Client Proxy
-        name: 'TREATMENT_SERVICE',
-        transport: Transport.RMQ,
-        options: {
-          urls: [process.env.RABBITMQ_URI],
-          queue: 'treatment_queue',
-          queueOptions: {
-            durable: false,
-          },
-        },
-      },
-    ]),
+    MongooseModule.forRoot(process.env.MONGO_URI),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
