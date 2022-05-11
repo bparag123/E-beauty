@@ -4,10 +4,16 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TreatmentsModule } from './treatments/treatments.module';
+import { ConfigModule } from '@nestjs/config';
+import { configuration } from 'config/configuration';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://mongodb:27017/treatment'),
+    ConfigModule.forRoot({
+      envFilePath: `${process.cwd()}/config/env/${process.env.NODE_ENV}.env`,
+      load: [configuration],
+    }),
+    MongooseModule.forRoot(process.env.MONGO_URI),
     //Here I have registered the Client module to get the instance of the other service
     ClientsModule.register([
       {
@@ -15,7 +21,7 @@ import { TreatmentsModule } from './treatments/treatments.module';
         name: 'TREATMENT_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://guest:guest@localhost:5672'],
+          urls: [process.env.RABBITMQ_URI],
           queue: 'treatment_queue',
           queueOptions: {
             durable: false,

@@ -50,8 +50,6 @@ services:
       - '3000:3000'
     networks:
       - e-beauty
-    env_file:
-      - ./treatments/.env
     volumes:
       - ./treatments:/usr/src/app
       - /usr/src/app/node_modules
@@ -85,8 +83,6 @@ services:
       - '4000:4000'
     networks:
       - e-beauty
-    env_file:
-      - ./users/.env
     volumes:
       - ./users:/usr/src/app
       - /usr/src/app/node_modules

@@ -11,6 +11,7 @@ export class AppController {
 
   @Get()
   getHello(): string {
+    console.log(this.client);
     this.client.emit('test', "Hello I'm From User");
     return this.appService.getHello();
   }
