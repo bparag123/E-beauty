@@ -5,7 +5,7 @@ import { AppService } from './app.service';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
-
+  //This function will rigger when any other service send the event 'new_user
   @EventPattern('new_user')
   async sendMail(
     @Payload() data: any,

@@ -71,6 +71,26 @@ services:
     networks:
       - e-beauty
 
+  auth:
+    container_name: auth
+    image: auth-service:1.0.0
+    hostname: auth
+
+    build:
+      context: ./auth
+      dockerfile: Dockerfile
+    command: npm run start:dev
+
+    ports:
+      - '3001:3001'
+    networks:
+      - e-beauty
+    volumes:
+      - ./auth:/usr/src/app
+      - /usr/src/app/node_modules
+    
+    restart: unless-stopped
+
   mailer:
     container_name: mailer
     image: mailer-service:1.0.0
@@ -78,7 +98,7 @@ services:
     build:
       context: ./mailer
       dockerfile: Dockerfile
-    
+
     command: npm run start:dev
     ports:
       - '5000:5000'
