@@ -9,7 +9,7 @@ import { AppService } from './app.service';
 import { LoginDTO } from './dto/loginDto';
 import { LocalAuthGuard } from './guards/LocalAuthGuard';
 
-@Controller()
+@Controller('auth')
 export class AppController {
   constructor(private readonly appService: AppService) {}
   /**
