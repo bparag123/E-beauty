@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
   const config = app.get(ConfigService);
+  app.enableCors({ origin: 'http://localhost:3002' });
   app.connectMicroservice({
     transport: Transport.RMQ,
     options: {

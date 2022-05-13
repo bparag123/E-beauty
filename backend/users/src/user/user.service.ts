@@ -18,8 +18,8 @@ export class UserService {
     });
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAll() {
+    return await this.userModel.find({});
   }
 
   findOne(id: number) {
@@ -37,14 +37,18 @@ export class UserService {
   //This method checks the email and password for the user
   async validateUser(data) {
     const { email: userEmail, password: userPassword } = data;
+    console.log('Validate User Service', userEmail, userPassword);
     const user = await this.userModel.findOne({ email: userEmail });
+    console.log(user);
     if (!user) {
       return null;
     }
     const isMatch = await bcrypt.compare(userPassword, user.password);
+    console.log(isMatch);
     if (!isMatch) {
       return null;
     }
+    console.log(user);
     const { email, _id } = user;
     return { email, _id };
   }

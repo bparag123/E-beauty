@@ -44,7 +44,6 @@ export class UserController {
 
   @Get()
   findAll() {
-    console.log('Get controller');
     return this.userService.findAll();
   }
 
@@ -70,6 +69,7 @@ export class UserController {
   async validateUser(@Payload() data, @Ctx() ctx: RmqContext) {
     console.log('User Service Called ', data);
     const userData = await this.userService.validateUser(data);
+    console.log(userData);
     if (!userData) {
       return null;
     }

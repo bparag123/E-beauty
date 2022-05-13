@@ -1,0 +1,9 @@
+.navlink {
+  color: azure;
+  text-decoration: none;
+  list-style: none;
+}
+
+.navlink:hover {
+  color: bisque;
+}
