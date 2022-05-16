@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavbarBrand, NavbarToggler, Collapse, NavLink as ReactNav, Nav, NavItem, Navbar, Button } from 'reactstrap'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import classes from "./Navbar.module.css"
 import { useDispatch, useSelector } from "react-redux"
 import userSlice from '../../store/slices/userSlice';
@@ -9,9 +9,12 @@ const MyNavBar = () => {
 
     const authSlice = useSelector(state => state.user)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const logoutHandler = () => {
         dispatch(userSlice.actions.logout())
+        localStorage.removeItem('token')
+        navigate('login', { replace: true })
     }
 
     return (
@@ -22,8 +25,8 @@ const MyNavBar = () => {
                     expand="md"
                     light
                 >
-                    <NavbarBrand href="/">
-                        E-Beauty
+                    <NavbarBrand>
+                        <NavLink className={classes['navlink']} to='/' >E-Beauty</NavLink>
                     </NavbarBrand>
                     <NavbarToggler onClick={function noRefCheck() { }} />
                     <Collapse navbar>
@@ -35,7 +38,7 @@ const MyNavBar = () => {
                                 <>
                                     <NavItem>
                                         <ReactNav>
-                                            <NavLink className={classes['navlink']} to='/treatment'>Treatment</NavLink>
+                                            <NavLink className={classes['navlink']} to='/treatments'>Treatment</NavLink>
                                         </ReactNav>
                                     </NavItem>
                                     <NavItem>
@@ -62,7 +65,7 @@ const MyNavBar = () => {
                     </Collapse>
                 </Navbar>
             </div>
-        </div>
+        </div >
     );
 }
 

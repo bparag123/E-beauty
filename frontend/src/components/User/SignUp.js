@@ -4,11 +4,13 @@ import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import signUpSchema from '../../schema/signup.schema';
 import classes from './SignUp.module.css'
 import { signUp } from '../../api/signup';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
 
     const [isLoading, setIsLoading] = useState(false)
-    const [data, setData] = useState(null)
+    const navigate = useNavigate()
+
     const formik = useFormik({
         initialValues: {
             username: '',
@@ -18,11 +20,9 @@ const SignUp = () => {
         },
         onSubmit: async (values) => {
             setIsLoading((prev) => true);
-            console.log(values);
-            const temp = await signUp(values)
-            console.log(temp);
-            setData(temp)
+            await signUp(values)
             setIsLoading((prev) => false)
+            navigate('/login', { replace: true,  })
         },
         validationSchema: signUpSchema
     })
@@ -89,7 +89,7 @@ const SignUp = () => {
                 <Button color='primary'>
                     {isLoading ? "Loading..." : "Sign Up"}
                 </Button>
-                {data && "Sign Up Successfull"}
+                <Link to={'/login'}>Already have an account?</Link>
             </Form>
         </div>
     );

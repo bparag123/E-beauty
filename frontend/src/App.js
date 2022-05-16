@@ -6,6 +6,7 @@ import { Routes, Route } from 'react-router-dom'
 import Home from './components/Home';
 import NotFound from './components/NotFound';
 import { useSelector } from 'react-redux';
+import Treatment from './components/Treatment';
 
 function App() {
   const authSlice = useSelector(state => state.user)
@@ -15,11 +16,18 @@ function App() {
       <MyNavBar />
 
       <Routes>
+
+        <Route path="/" element={<Home />} />
+
         {authSlice.isLoggedIn && <>
-          <Route path="/" element={<Home />}></Route>
+          <Route path="/treatments" element={<Treatment />} />
         </>}
-        <Route path="login" element={<Login />}></Route>
-        <Route path="signup" element={<SignUp />}></Route>
+        {!authSlice.isLoggedIn && <>
+          <Route path="login" element={<Login />} />
+        </>}
+        {!authSlice.isLoggedIn && <>
+          <Route path="signup" element={<SignUp />} />
+        </>}
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </div>

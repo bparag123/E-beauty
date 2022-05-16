@@ -3,12 +3,13 @@ import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import { useFormik } from 'formik'
 import loginSchema from '../../schema/login.schema';
 import classes from './Login.module.css'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { loginUser } from '../../store/custom-actions'
+import { useNavigate, Link } from 'react-router-dom';
 
 const Login = () => {
     console.log("Component Rendered");
-    const authSlice = useSelector(state => state.user)
+    const navigate = useNavigate()
     // const [isLoggedIn, setLoggedIn] = useState(false)
     const dispatch = useDispatch()
     const formik = useFormik({
@@ -18,6 +19,8 @@ const Login = () => {
         },
         onSubmit: (values) => {
             dispatch(loginUser(values))
+            navigate('/treatments', { replace: true })
+
         },
         validationSchema: loginSchema
     })
@@ -56,7 +59,7 @@ const Login = () => {
                 <Button type='Submit' color='primary'>
                     Login
                 </Button>
-                <h3>{authSlice.isLoggedIn && "You are Authenticated"}</h3>
+                <Link to={'/signup'}>Don't have an account?</Link>
             </Form >
         </div>
     );
