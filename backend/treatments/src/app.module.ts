@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { TreatmentsModule } from './treatments/treatments.module';
 import { ConfigModule } from '@nestjs/config';
 import { configuration } from 'config/configuration';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { Cloudinary } from './cloudinary';
 
 @Module({
   imports: [
@@ -30,8 +32,9 @@ import { configuration } from 'config/configuration';
       },
     ]),
     TreatmentsModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, Cloudinary],
 })
 export class AppModule {}

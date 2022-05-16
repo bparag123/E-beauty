@@ -6,7 +6,7 @@ import { Routes, Route } from 'react-router-dom'
 import Home from './components/Home';
 import NotFound from './components/NotFound';
 import { useSelector } from 'react-redux';
-import Treatment from './components/Treatment';
+import TreatmentList from './components/treatments/TreatmentList';
 
 function App() {
   const authSlice = useSelector(state => state.user)
@@ -20,7 +20,7 @@ function App() {
         <Route path="/" element={<Home />} />
 
         {authSlice.isLoggedIn && <>
-          <Route path="/treatments" element={<Treatment />} />
+          <Route path="/treatments" element={<TreatmentList />} />
         </>}
         {!authSlice.isLoggedIn && <>
           <Route path="login" element={<Login />} />

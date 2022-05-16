@@ -9,10 +9,13 @@ export class Treatment {
   name: string;
 
   @Prop()
-  time: Date;
+  duration: number;
 
   @Prop()
   charge: number;
+
+  @Prop()
+  images: [string];
 }
 
 export const TreatmentSchema = SchemaFactory.createForClass(Treatment);

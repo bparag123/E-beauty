@@ -1,46 +1,65 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Req,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { TreatmentsService } from './treatments.service';
 import { CreateTreatmentDto } from './dto/create-treatment.dto';
-import { UpdateTreatmentDto } from './dto/update-treatment.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('treatment')
 export class TreatmentsController {
   constructor(private readonly treatmentsService: TreatmentsService) {}
 
+  // @UseGuards(AuthGuard)
+  // @Get()
+  // private(@Req() req) {
+  //   console.log(req.user);
+  //   return `'You are Authenticated with email ${req.user.email}'`;
+  // }
+
+  // @UseGuards(AuthGuard)
+  @Post()
+  @UseInterceptors(
+    FileInterceptor('file', {
+      fileFilter: (req, file, cb) => {
+        const extention = file.originalname.split('.')[1];
+        if (extention !== 'png' && extention !== 'jpg') {
+          cb(new Error('Please Upload file in JPG/PNG format'), false);
+        }
+        if (file.size >= 1000 * 1000) {
+          cb(new Error('Please Upload file in JPG/PNG format'), false);
+        }
+        cb(null, true);
+      },
+    }),
+  )
+  // @MessagePattern('createTreatment')
+  create(
+    @Body() createTreatmentDto: CreateTreatmentDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    console.log(createTreatmentDto);
+    console.log(file);
+    return this.treatmentsService.create(createTreatmentDto, file);
+  }
+
   @UseGuards(AuthGuard)
   @Get()
-  private(@Req() req) {
-    console.log(req.user);
-    return `'You are Authenticated with email ${req.user.email}'`;
-  }
-
-  @MessagePattern('createTreatment')
-  create(@Payload() createTreatmentDto: CreateTreatmentDto) {
-    return this.treatmentsService.create(createTreatmentDto);
-  }
-
-  @MessagePattern('findAllTreatments')
   findAll() {
     return this.treatmentsService.findAll();
   }
 
-  @MessagePattern('findOneTreatment')
-  findOne(@Payload() id: number) {
+  @UseGuards(AuthGuard)
+  @Get(':id')
+  findOne(@Param('id') id: string) {
     return this.treatmentsService.findOne(id);
-  }
-
-  @MessagePattern('updateTreatment')
-  update(@Payload() updateTreatmentDto: UpdateTreatmentDto) {
-    return this.treatmentsService.update(
-      updateTreatmentDto.id,
-      updateTreatmentDto,
-    );
-  }
-
-  @MessagePattern('removeTreatment')
-  remove(@Payload() id: number) {
-    return this.treatmentsService.remove(id);
   }
 }

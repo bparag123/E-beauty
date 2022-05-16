@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { TreatmentSchema } from 'src/schemas/treatment.schema';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { config } from 'dotenv';
+import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
 config({ path: `${process.cwd()}/config/env/${process.env.NODE_ENV}.env` });
 @Module({
   imports: [
@@ -23,6 +24,7 @@ config({ path: `${process.cwd()}/config/env/${process.env.NODE_ENV}.env` });
         },
       },
     ]),
+    CloudinaryModule,
   ],
   controllers: [TreatmentsController],
   providers: [TreatmentsService],
