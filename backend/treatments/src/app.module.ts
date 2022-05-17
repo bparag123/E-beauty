@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { configuration } from 'config/configuration';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { Cloudinary } from './cloudinary';
+import { BookingsModule } from './bookings/bookings.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { Cloudinary } from './cloudinary';
     ]),
     TreatmentsModule,
     CloudinaryModule,
+    BookingsModule,
   ],
   controllers: [AppController],
   providers: [AppService, Cloudinary],

@@ -37,6 +37,7 @@
     "class-validator": "^0.13.2",
     "cloudinary": "^1.30.0",
     "dotenv": "^16.0.0",
+    "moment": "^2.29.3",
     "mongoose": "^6.3.2",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
