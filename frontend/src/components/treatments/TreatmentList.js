@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom';
 import { getAllTreatments } from '../../store/custom-actions';
 import TreatmentItem from './TreatmentItem';
 import classes from './TreatmentList.module.css'
@@ -7,11 +8,17 @@ import classes from './TreatmentList.module.css'
 const TreatmentList = () => {
 
     const treatments = useSelector(state => state.treatment.treatment)
-
+    const authSlice = useSelector(state => state.user)
+    const { isLoggedIn } = authSlice
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     useEffect(() => {
-        dispatch(getAllTreatments())
-    }, [dispatch])
+        if (!isLoggedIn) {
+            navigate('/login', { replace: true })
+        } else {
+            dispatch(getAllTreatments())
+        }
+    }, [dispatch, navigate, isLoggedIn])
 
     return (
         <>

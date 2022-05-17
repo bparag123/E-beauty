@@ -1,17 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import { useFormik } from 'formik'
 import loginSchema from '../../schema/login.schema';
 import classes from './Login.module.css'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { loginUser } from '../../store/custom-actions'
 import { useNavigate, Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
 const Login = () => {
     console.log("Component Rendered");
     const navigate = useNavigate()
-    // const [isLoggedIn, setLoggedIn] = useState(false)
+    const authSlice = useSelector(state => state.user)
+    const { isLoggedIn } = authSlice
     const dispatch = useDispatch()
     const formik = useFormik({
         initialValues: {
@@ -20,19 +20,18 @@ const Login = () => {
         },
         onSubmit: (values) => {
             dispatch(loginUser(values))
-            toast.success('Login Successfull!', {
-                position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+
             navigate('/treatments', { replace: true })
         },
         validationSchema: loginSchema
     })
+
+    useEffect(() => {
+        console.log("Use Effect Run");
+        if (isLoggedIn) {
+            navigate('/treatments', { replace: true })
+        }
+    }, [isLoggedIn, navigate])
 
     return (
         <div >

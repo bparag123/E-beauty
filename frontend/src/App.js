@@ -20,8 +20,10 @@ function App() {
       <Routes>
 
         <Route path="/" element={<Home />} />
-
-        {authSlice.isLoggedIn && <>
+        <Route path="/treatments" element={<TreatmentList />} />
+        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<SignUp />} />
+        {/* {authSlice.isLoggedIn && <>
           <Route path="/treatments" element={<TreatmentList />} />
         </>}
         {!authSlice.isLoggedIn && <>
@@ -29,7 +31,7 @@ function App() {
         </>}
         {!authSlice.isLoggedIn && <>
           <Route path="signup" element={<SignUp />} />
-        </>}
+        </>} */}
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
       <ToastContainer />

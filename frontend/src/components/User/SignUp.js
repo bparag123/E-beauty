@@ -1,16 +1,17 @@
 import { useFormik } from 'formik';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import signUpSchema from '../../schema/signup.schema';
 import classes from './SignUp.module.css'
 import { signUp } from '../../api/signup';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify'
+import { useSelector } from 'react-redux';
 
 const SignUp = () => {
-
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
+    const authSlice = useSelector(state => state.user)
+    const { isLoggedIn } = authSlice
 
     const formik = useFormik({
         initialValues: {
@@ -24,18 +25,16 @@ const SignUp = () => {
             await signUp(values)
             setIsLoading((prev) => false)
             navigate('/login', { replace: true, })
-            toast.info('User Successfully Created', {
-                position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+
         },
         validationSchema: signUpSchema
     })
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate('/treatments', { replace: true })
+        }
+    }, [isLoggedIn, navigate])
 
     return (
         <div>
