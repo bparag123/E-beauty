@@ -6,6 +6,7 @@ import classes from './Login.module.css'
 import { useDispatch } from 'react-redux'
 import { loginUser } from '../../store/custom-actions'
 import { useNavigate, Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Login = () => {
     console.log("Component Rendered");
@@ -19,8 +20,16 @@ const Login = () => {
         },
         onSubmit: (values) => {
             dispatch(loginUser(values))
+            toast.success('Login Successfull!', {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
             navigate('/treatments', { replace: true })
-
         },
         validationSchema: loginSchema
     })
@@ -61,6 +70,7 @@ const Login = () => {
                 </Button>
                 <Link to={'/signup'}>Don't have an account?</Link>
             </Form >
+
         </div>
     );
 }

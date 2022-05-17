@@ -7,6 +7,8 @@ import Home from './components/Home';
 import NotFound from './components/NotFound';
 import { useSelector } from 'react-redux';
 import TreatmentList from './components/treatments/TreatmentList';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const authSlice = useSelector(state => state.user)
@@ -30,6 +32,7 @@ function App() {
         </>}
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
+      <ToastContainer />
     </div>
   );
 }

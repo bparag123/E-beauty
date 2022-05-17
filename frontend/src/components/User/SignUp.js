@@ -5,6 +5,7 @@ import signUpSchema from '../../schema/signup.schema';
 import classes from './SignUp.module.css'
 import { signUp } from '../../api/signup';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify'
 
 const SignUp = () => {
 
@@ -22,7 +23,16 @@ const SignUp = () => {
             setIsLoading((prev) => true);
             await signUp(values)
             setIsLoading((prev) => false)
-            navigate('/login', { replace: true,  })
+            navigate('/login', { replace: true, })
+            toast.info('User Successfully Created', {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         },
         validationSchema: signUpSchema
     })

@@ -1,14 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const treatmentSlice = createSlice({
-    name: 'treatments',
+    name: 'treatment',
     initialState: {
-        treatments: []
+        treatment: []
     },
     reducers: {
         getAllTreatments(state, { payload }) {
-            console.log(payload);
-            state.treatments = payload
+            state.treatment = payload
         }
     }
 })

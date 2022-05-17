@@ -15,6 +15,6 @@ export const loginUser = (data) => {
 export const getAllTreatments = () => {
     return async (dispatch) => {
         const response = await treatment();
-        dispatch(treatmentSlice.actions.getAllTreatments(response.data))
+        dispatch(treatmentSlice.actions.getAllTreatments(response))
     }
 }
