@@ -4,6 +4,7 @@ import { CreateBookingDTO } from './dto/createBookingDto';
 
 interface dateInput {
   datetime: Date;
+  duration: number;
 }
 
 @Controller('bookings')
@@ -15,7 +16,7 @@ export class BookingsController {
   }
 
   @Get()
-  availableSlots(@Body() date: dateInput) {
-    return this.bookingService.availableSlots(date.datetime);
+  availableSlots(@Body() data: dateInput) {
+    return this.bookingService.availableSlots(data.datetime, data.duration);
   }
 }
