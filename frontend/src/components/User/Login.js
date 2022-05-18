@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
+import React, { useEffect, useState } from 'react';
+import { Button, Form, FormGroup, Input, Label, Spinner } from 'reactstrap';
 import { useFormik } from 'formik'
 import loginSchema from '../../schema/login.schema';
 import classes from './Login.module.css'
@@ -10,6 +10,7 @@ import { useNavigate, Link } from 'react-router-dom';
 const Login = () => {
     console.log("Component Rendered");
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false)
     const authSlice = useSelector(state => state.user)
     const { isLoggedIn } = authSlice
     const dispatch = useDispatch()
@@ -19,8 +20,9 @@ const Login = () => {
             password: ''
         },
         onSubmit: (values) => {
+            setIsLoading(state => true)
             dispatch(loginUser(values))
-
+            setIsLoading(state => false)
             navigate('/treatments', { replace: true })
         },
         validationSchema: loginSchema
@@ -65,7 +67,9 @@ const Login = () => {
                     <p>{formik.errors.password}</p>
                 )}
                 <Button type='Submit' color='primary'>
-                    Login
+                    {isLoading ? <Spinner>
+                        Loading...
+                    </Spinner> : "Login"}
                 </Button>
                 <Link to={'/signup'}>Don't have an account?</Link>
             </Form >

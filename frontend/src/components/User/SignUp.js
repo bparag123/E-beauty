@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
-import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
+import { Button, Form, FormGroup, Input, Label, Spinner } from 'reactstrap';
 import signUpSchema from '../../schema/signup.schema';
 import classes from './SignUp.module.css'
 import { signUp } from '../../api/signup';
@@ -96,7 +96,9 @@ const SignUp = () => {
                     <p>{formik.errors.confirmPassword}</p>
                 )}
                 <Button color='primary'>
-                    {isLoading ? "Loading..." : "Sign Up"}
+                    {isLoading ? <Spinner>
+                        Loading...
+                    </Spinner> : "Sign Up"}
                 </Button>
                 <Link to={'/login'}>Already have an account?</Link>
             </Form>

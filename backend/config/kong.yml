@@ -21,6 +21,14 @@ services:
     paths:
     - /treatment
 
+- name: booking
+  url: "http://treatment:3000/bookings"
+  #Here we can provide the end points of the service we want to avail for the client
+  routes:
+  - name: bookings
+    paths:
+    - /bookings
+
 #This is the name of service
 - name: auth
   url: "http://auth:3001/auth"

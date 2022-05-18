@@ -18,3 +18,9 @@ export const getAllTreatments = () => {
         dispatch(treatmentSlice.actions.getAllTreatments(response))
     }
 }
+
+// export const getSingleTreatment = () => {
+//     return async (dispatch) => {
+//         const response = await getAllTreatments();
+//     }
+// }

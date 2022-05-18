@@ -10,6 +10,13 @@ export class BookingsService {
     @InjectModel('Booking') private bookingModel: Model<BookingSchema>,
   ) {}
 
+  async deleteAllBookings() {
+    return await this.bookingModel.deleteMany();
+  }
+
+  async getAllBookings() {
+    return await this.bookingModel.find();
+  }
   async bookSlot(data) {
     const { treatmentId, duration, datetime } = data;
     const d = new Date(datetime);
@@ -23,6 +30,8 @@ export class BookingsService {
   }
 
   async availableSlots(date, duration) {
+    console.log(date);
+    console.log(duration);
     //This is a temporary Policy
     //Todo : Store the working Policy into the DB
     const policy = {
@@ -30,6 +39,7 @@ export class BookingsService {
       endTime: '21:00',
     };
     const d = new Date(date);
+    console.log(d);
     //Finding the Booking of the given Date
     const treatments = await this.bookingModel
       .find({
