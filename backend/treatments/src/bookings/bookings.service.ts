@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -49,55 +50,58 @@ export class BookingsService {
         },
       })
       .sort({ datetime: 1 });
+    const slots = {
+      available: [],
+      occupied: [],
+    };
+    const dayStart = moment(date + ' ' + policy.startTime);
+    const dayEnd = moment(date + ' ' + policy.endTime);
 
-    const slots = [];
-    let startTime;
-    let endTime;
-
-    for (let ele = 1; ele <= treatments.length; ele++) {
-      //This will be Starting Time of Current Treatment
-      startTime = moment(treatments[ele - 1].datetime);
-
-      //This will be Ending Time of Current Treatment
-      //This can also be considered as start time of next treatment
-      endTime = moment(treatments[ele - 1].datetime).add(
-        treatments[ele - 1].duration,
-        'h',
-      );
-      //For the first time we need to check the slot from starting of working day
-      if (ele === 1) {
-        const dayStart = moment(date + ' ' + policy.startTime);
-
-        /**If the day starting time and the duration to complete the given task is 
-        less then starting time of next treatment then i need to allot the slot 
-        */
-        if (moment(dayStart).add(duration, 'h').isSameOrBefore(startTime)) {
-          slots.push(dayStart.format('hh:mm a'));
-        }
-      }
-      /**For the Last Booked Treatment if the request Duration is exceeding the working hour
-      then that slot will not be available to be book
-      */
-      if (ele === treatments.length) {
-        const dayEnd = moment(date + ' ' + policy.endTime);
-        if (moment(endTime).add(duration, 'h').isSameOrBefore(dayEnd)) {
-          slots.push(endTime.format('hh:mm a'));
-        }
-      } else {
-        /**
-         * If Starting time of the next treatment is not in between starting time and ending time
-         * of the selected slot then it will be available to be book
-         */
-        if (
-          !moment(treatments[ele].datetime).isBetween(
-            endTime,
-            moment(endTime).add(duration, 'h'),
-          )
-        ) {
-          slots.push(endTime.format('hh:mm a'));
-        }
+    //Finding The Occupied Slots
+    if (treatments.length === 0) {
+      slots.available.push({
+        start: moment(dayStart).format(),
+        end: moment(dayEnd).format(),
+      });
+    } else {
+      for (let ele = 0; ele < treatments.length; ele++) {
+        const startTime = moment(treatments[ele].datetime);
+        const endTime = moment(startTime).add(treatments[ele].duration, 'h');
+        slots.occupied.push({
+          start: moment(startTime).format(),
+          end: moment(endTime).format(),
+        });
       }
     }
+
+    //This is a counter type variable to check the available time difference between treatments
+    let lastFreeTime = moment(dayStart);
+    slots.occupied.forEach((ele) => {
+      if (moment(ele.start).isSame(moment(dayStart))) {
+        lastFreeTime = moment(ele.end);
+      } else {
+        if (moment(lastFreeTime).isSame(moment(ele.start))) {
+          lastFreeTime = moment(ele.end);
+        } else if (moment(ele.start).isAfter(moment(lastFreeTime))) {
+          slots.available.push({
+            start: moment(lastFreeTime).format(),
+            end: moment(ele.start).format(),
+          });
+        }
+      }
+    });
+    if (slots.occupied.length > 0) {
+      const lastFinished = moment(
+        slots.occupied[slots.occupied.length - 1].end,
+      );
+      if (moment(lastFinished).isBefore(moment(dayEnd))) {
+        slots.available.push({
+          start: moment(lastFinished).format(),
+          end: moment(dayEnd).format(),
+        });
+      }
+    }
+
     return slots;
   }
 }
