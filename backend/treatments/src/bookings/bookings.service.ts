@@ -83,16 +83,16 @@ export class BookingsService {
         if (moment(lastFreeTime).isSame(moment(ele.start))) {
           lastFreeTime = moment(ele.end);
         } else if (moment(ele.start).isAfter(moment(lastFreeTime))) {
-          if (
-            !(
-              Math.abs(moment(lastFreeTime).diff(moment(ele.start), 'h')) <
-              duration
-            )
-          ) {
+          const diff = moment.duration(lastFreeTime.diff(moment(ele.start)));
+          console.log('Last Free', moment(lastFreeTime));
+          console.log('Current Start', moment(ele.start));
+          console.log(Math.abs(diff.asHours()) >= duration);
+          if (Math.abs(diff.asHours()) >= duration) {
             slots.available.push({
               start: moment(lastFreeTime).format(),
               end: moment(ele.start).format(),
             });
+            lastFreeTime = moment(ele.end);
           }
         }
       }
@@ -102,9 +102,9 @@ export class BookingsService {
         slots.occupied[slots.occupied.length - 1].end,
       );
       if (moment(lastFinished).isBefore(moment(dayEnd))) {
-        if (
-          !(Math.abs(moment(lastFinished).diff(moment(dayEnd), 'h')) < duration)
-        ) {
+        const diff = moment.duration(lastFreeTime.diff(dayEnd));
+
+        if (Math.abs(diff.asHours()) >= duration) {
           slots.available.push({
             start: moment(lastFinished).format(),
             end: moment(dayEnd).format(),

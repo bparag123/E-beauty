@@ -10,7 +10,7 @@ const TreatmentDetails = () => {
     const treatmentData = useSelector(state => state.treatment.treatment)
     const [date, setDate] = useState(new Date())
     const [isLoading, setIsLoading] = useState(false)
-    const [availability, setAvailability] = useState(null)
+    const [slots, setSlots] = useState(null)
     const { id } = useParams();
     const { _id, name, duration, charge } = treatmentData.find((ele) => {
         return ele._id === id
@@ -18,10 +18,10 @@ const TreatmentDetails = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         setIsLoading(state => true);
-        const availableSlots = await checkAvailability({ datetime: date, duration })
-        setAvailability(availableSlots)
+        const result = await checkAvailability({ datetime: date, duration })
+        setSlots(result)
         setIsLoading(state => false)
-        console.log(availableSlots)
+        console.log(result)
     }
 
     const handleChange = async (e) => {
@@ -50,8 +50,8 @@ const TreatmentDetails = () => {
                             Check Availability
                         </Button>
                     </Form>
-                    {availability ? isLoading ? <Spinner>Loading...</Spinner> : availability.map((ele) => {
-                        return <p>{ele}</p>
+                    {slots ? isLoading ? <Spinner>Loading...</Spinner> : slots.available.map((ele) => {
+                        return <p>{moment.utc(ele.start).format('hh:mm a')} - {moment.utc(ele.end).format('hh:mm a')}</p>
                     }) : ""}
                 </CardBody>
             </Card>
