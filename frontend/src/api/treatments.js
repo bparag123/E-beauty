@@ -16,12 +16,12 @@ export const treatment = async () => {
 }
 
 
-// export const getTreatmentById = async (id) => {
-//     const response = await instance({
-//         method: 'get',
-//         url: `/${id}`,
-//         headers: setHeaders()
-//     })
-//     console.log("Response from Treatment Service", response.data);
-//     return response.data
-// }
+export const getTreatmentById = async (id) => {
+    const response = await instance({
+        method: 'get',
+        url: `/${id}`,
+        headers: setHeaders()
+    })
+    console.log("Response from Treatment Service", response.data);
+    return response.data
+}
