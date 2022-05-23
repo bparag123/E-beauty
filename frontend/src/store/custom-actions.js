@@ -7,6 +7,7 @@ import treatmentSlice from "./slices/treatmentSlice";
 export const loginUser = (data) => {
     return async (dispatch) => {
         const response = await login(data)
+        console.log(response);
         localStorage.setItem('token', response.access_token)
         dispatch(userSlice.actions.login(response))
     }

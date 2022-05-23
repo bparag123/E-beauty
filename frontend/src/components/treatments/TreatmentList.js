@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getAllTreatments } from '../../store/custom-actions';
 import TreatmentItem from './TreatmentItem';
 import classes from './TreatmentList.module.css'

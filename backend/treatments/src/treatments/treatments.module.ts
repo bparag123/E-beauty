@@ -6,6 +6,9 @@ import { TreatmentSchema } from 'src/schemas/treatment.schema';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { config } from 'dotenv';
 import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { AuthGuard } from 'src/guards/auth.guard';
 config({ path: `${process.cwd()}/config/env/${process.env.NODE_ENV}.env` });
 @Module({
   imports: [
@@ -27,6 +30,16 @@ config({ path: `${process.cwd()}/config/env/${process.env.NODE_ENV}.env` });
     CloudinaryModule,
   ],
   controllers: [TreatmentsController],
-  providers: [TreatmentsService],
+  providers: [
+    TreatmentsService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class TreatmentsModule {}

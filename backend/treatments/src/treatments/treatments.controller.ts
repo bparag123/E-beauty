@@ -4,28 +4,23 @@ import {
   Get,
   Param,
   Post,
-  Req,
   UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { TreatmentsService } from './treatments.service';
 import { CreateTreatmentDto } from './dto/create-treatment.dto';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { AuthGuard } from '../guards/auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Roles } from 'src/decorators/roles.decorators';
+import { Role } from 'src/role.enum';
 
 @Controller('treatment')
 export class TreatmentsController {
   constructor(private readonly treatmentsService: TreatmentsService) {}
 
-  // @UseGuards(AuthGuard)
-  // @Get()
-  // private(@Req() req) {
-  //   console.log(req.user);
-  //   return `'You are Authenticated with email ${req.user.email}'`;
-  // }
-
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
+  @Roles(Role.Admin)
   @Post()
   @UseInterceptors(
     FileInterceptor('file', {

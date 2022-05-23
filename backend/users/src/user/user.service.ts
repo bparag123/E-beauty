@@ -49,7 +49,7 @@ export class UserService {
       return null;
     }
     console.log(user);
-    const { email, _id } = user;
-    return { email, _id };
+    const { email, _id, roles } = user;
+    return { email, _id, roles };
   }
 }

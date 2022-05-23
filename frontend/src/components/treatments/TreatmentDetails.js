@@ -1,16 +1,16 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { Button, Card, Form, CardBody, CardSubtitle, CardText, CardTitle, Input, Spinner, FormGroup, Label } from 'reactstrap'
+import { Button, Card, CardImg, Form, CardBody, CardSubtitle, CardText, CardTitle, Input, Spinner, FormGroup, Label } from 'reactstrap'
 import { useNavigate, useParams } from 'react-router-dom'
 import { bookSlot, checkAvailability } from '../../api/bookings';
 import * as moment from 'moment'
 import { getTreatmentById } from '../../api/treatments';
 import { toast } from 'react-toastify';
+import classes from './TreatmentDetail.module.css'
 
 const TreatmentDetails = () => {
     console.log("Detail Component Rendered");
     const [treatmentData, setTreatmentData] = useState()
     const navigate = useNavigate()
-    const [date, setDate] = useState(new Date())
     const [isLoading, setIsLoading] = useState(false)
     const [slots, setSlots] = useState(null)
     const [selectedTime, setSelectedTime] = useState()
@@ -52,7 +52,6 @@ const TreatmentDetails = () => {
 
 
     const handleChange = async (e) => {
-        setDate(state => e.target.value)
         setIsLoading(state => true);
         const result = await checkAvailability({ datetime: e.target.value, duration: treatmentData.duration })
         setSlots(state => result)
@@ -82,8 +81,9 @@ const TreatmentDetails = () => {
                     <CardTitle tag="h5">
                         {treatmentData.name}
                     </CardTitle>
+                    <CardImg src={treatmentData.images[0]} alt={treatmentData.name} className={classes['image']}></CardImg>
                     <CardSubtitle className="mb-2 text-muted" tag="h6" >
-                        It will Take {treatmentData.duration * 60} Minutes
+                        <h6>It will Take {treatmentData.duration * 60} Minutes</h6>
                     </CardSubtitle>
                     <CardText>
                         Rs. {treatmentData.charge} /-
@@ -94,21 +94,20 @@ const TreatmentDetails = () => {
                             Available Slots
                         </legend>
                         {slots ? isLoading ? <Spinner>Loading...</Spinner> : slots.available.map((ele, index) => {
-                            return <>
-                                <FormGroup check>
-                                    <Input name="radio1" type="radio" value={index} onChange={handleRadioChange} />
-                                    {' '}
-                                    <Label check>
-                                        {moment.utc(ele.start).format('hh:mm a')} - {moment.utc(ele.end).format('hh:mm a')}
-                                    </Label>
-                                </FormGroup>
+                            return <FormGroup check key={index}>
+                                <Input name="radio1" type="radio" value={index} onChange={handleRadioChange} />
+                                {' '}
+                                <Label check>
+                                    {moment.utc(ele.start).format('hh:mm a')} - {moment.utc(ele.end).format('hh:mm a')}
+                                </Label>
+                            </FormGroup>
 
-                            </>
+
                         }) : ""}
                     </FormGroup> : ""}
 
                     <Form onSubmit={handleSubmit}>
-                        <Input type='date' onChange={handleChange} />
+                        <Input type='date' onChange={handleChange} className={classes['date_input']} />
                         <Button type='submit'>
                             Book Slot
                         </Button>

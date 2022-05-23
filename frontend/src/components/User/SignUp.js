@@ -22,6 +22,7 @@ const SignUp = () => {
         },
         onSubmit: async (values) => {
             setIsLoading((prev) => true);
+            console.log(values);
             await signUp(values)
             setIsLoading((prev) => false)
             navigate('/login', { replace: true, })

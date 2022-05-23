@@ -20,6 +20,7 @@ export class AppController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   login(@Body() loginDto: LoginDTO, @Req() req) {
+    console.log(req.user);
     return this.appService.getToken(req.user);
   }
 
@@ -28,6 +29,7 @@ export class AppController {
    */
   @MessagePattern('authenticate')
   authenticateRequest(@Payload() token: string, @Ctx() ctx: RmqContext) {
+    console.log('request to authenticate token');
     return this.appService.validateToken(token);
   }
 }

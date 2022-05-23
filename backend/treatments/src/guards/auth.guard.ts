@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { firstValueFrom, timeout } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 /**
  * This is a custom guard which is responsible to take the token from the request and pass
@@ -14,8 +14,8 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    console.log('Auth Guard Runs');
     const req = context.switchToHttp().getRequest();
-
     try {
       const res = await firstValueFrom(
         this.authService.send(
@@ -23,7 +23,8 @@ export class AuthGuard implements CanActivate {
           req.headers['authorization']?.split(' ')[1],
         ),
       );
-      req.user = { email: res.email, _id: res._id };
+      console.log(res);
+      req.user = { email: res.email, _id: res._id, roles: res.roles };
       return true;
     } catch (err) {
       console.log('ERROR');

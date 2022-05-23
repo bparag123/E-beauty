@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   Inject,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -28,6 +30,7 @@ export class UserController {
   ) {}
 
   //This method will create new user and emit the event to mailer service to send welcome Mail
+  @UsePipes(new ValidationPipe())
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     try {
