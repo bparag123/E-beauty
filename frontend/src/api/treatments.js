@@ -15,6 +15,19 @@ export const treatment = async () => {
     return response.data
 }
 
+export const createTreatment = async (data) => {
+    const response = await instance({
+        method: 'post',
+        url: '',
+        data,
+        headers: {
+            "Content-Type": "multipart/form-data",
+            ...setHeaders()
+        },
+    })
+
+    console.log("Creation Of treatment", response.data)
+}
 
 export const getTreatmentById = async (id) => {
     const response = await instance({

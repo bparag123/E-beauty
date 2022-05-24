@@ -6,8 +6,8 @@ import { useSelector } from 'react-redux';
 import AdbIcon from '@mui/icons-material/Adb';
 import userSlice from '../../store/slices/userSlice';
 import { useDispatch } from 'react-redux';
-
 import classes from './Navbar.module.css';
+
 const ResponsiveAppBar = () => {
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -39,6 +39,16 @@ const ResponsiveAppBar = () => {
         setAnchorElUser(null);
     };
 
+    const navLinkStyles = {
+        fontFamily: 'monospace',
+        color: 'black',
+        textDecoration: 'none',
+        display: 'flex',
+        flexDirection: 'column',
+        textAlign: 'center',
+        p: '2'
+    }
+
     return (
         <AppBar position="static">
             <Container maxWidth="xl">
@@ -61,7 +71,6 @@ const ResponsiveAppBar = () => {
                         E-Beauty
                     </Typography>
 
-                    {/* ===================== */}
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
                             size="large"
@@ -94,34 +103,20 @@ const ResponsiveAppBar = () => {
 
                             {authSlice.isLoggedIn ? <Container className={classes["menu_wrapper"]}>
                                 <Typography component={Link} to="/treatments"
-                                    sx={{
-                                        fontFamily: 'monospace'
-                                    }}>
+                                    sx={navLinkStyles}>
                                     Treatments
                                 </Typography>
-                                <Typography component={Link} to="/treatments/create" sx={{
-                                    fontFamily: 'monospace'
-                                }}>
+                                <Typography component={Link} to="/treatments/create" sx={navLinkStyles}>
                                     Create Treatment
                                 </Typography>
                             </Container> :
                                 <>
                                     <Typography component={Link} to="/login"
-                                        sx={{
-                                            fontFamily: 'monospace',
-                                            mr: 0.85,
-                                            color: 'white',
-                                            textDecoration: 'none',
-                                        }}>
+                                        sx={navLinkStyles}>
                                         Login
                                     </Typography>
                                     <Typography component={Link} to="/signup"
-                                        sx={{
-                                            fontFamily: 'monospace',
-                                            mr: 0.85,
-                                            color: 'white',
-                                            textDecoration: 'none',
-                                        }}>
+                                        sx={navLinkStyles}>
                                         Sign Up
                                     </Typography></>}
 
@@ -129,7 +124,7 @@ const ResponsiveAppBar = () => {
                         </Menu>
                     </Box>
                     <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-                    {/* ===================== */}
+
                     <Typography
                         variant="h5"
                         noWrap

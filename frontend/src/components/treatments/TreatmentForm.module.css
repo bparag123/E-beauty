@@ -1,0 +1,12 @@
+.treatment_form_wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  margin: auto;
+  padding: 1rem;
+}
+
+.treatment_form_wrapper > div,
+.treatment_form_wrapper > button {
+  margin-top: 2rem;
+}

@@ -45,7 +45,6 @@ const Login = () => {
 
     return (
         <div >
-
             <FormGroup className={classes['loginForm']}>
                 <FormControl variant="standard">
                     <TextField error={formik.errors.email && formik.touched.email} helperText={formik.errors.email} id="standard-basic" label="Email" variant="standard" placeholder='Email' {...formik.getFieldProps('email')} />
