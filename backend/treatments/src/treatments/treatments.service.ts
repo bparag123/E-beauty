@@ -29,6 +29,14 @@ export class TreatmentsService {
     return await this.Treatment.find();
   }
 
+  async deleteAll() {
+    return await this.Treatment.deleteMany();
+  }
+
+  async deleteById(id: string) {
+    return await this.Treatment.deleteOne({ _id: id });
+  }
+
   async findOne(id: string) {
     return await this.Treatment.find({ _id: id });
   }

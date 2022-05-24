@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -56,5 +57,17 @@ export class TreatmentsController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.treatmentsService.findOne(id);
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete()
+  deleteAll() {
+    return this.treatmentsService.deleteAll();
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete(':id')
+  deleteById(@Param('id') id: string) {
+    return this.treatmentsService.deleteById(id);
   }
 }
