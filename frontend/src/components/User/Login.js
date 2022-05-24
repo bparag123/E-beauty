@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, FormGroup, Input, Label, Spinner } from 'reactstrap';
+import { FormControl, FormGroup } from '@mui/material';
 import { useFormik } from 'formik'
 import loginSchema from '../../schema/login.schema';
 import classes from './Login.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser } from '../../store/custom-actions'
 import { useNavigate, Link } from 'react-router-dom';
-
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { IconButton, InputAdornment, TextField } from '@mui/material'
 const Login = () => {
     console.log("Component Rendered");
     const navigate = useNavigate()
@@ -27,6 +30,11 @@ const Login = () => {
         },
         validationSchema: loginSchema
     })
+    const [showPassword, setShowPassword] = useState(false)
+
+    const handlePasswordVisiblity = (e) => {
+        setShowPassword(state => !state)
+    }
 
     useEffect(() => {
         console.log("Use Effect Run");
@@ -37,44 +45,32 @@ const Login = () => {
 
     return (
         <div >
-            <Form inline onSubmit={formik.handleSubmit} className={classes['loginForm']}>
-                <FormGroup floating>
-                    <Input
-                        id="exampleEmail"
-                        placeholder="Email"
-                        type="email"
-                        {...formik.getFieldProps('email')}
-                    />
-                    <Label for="exampleEmail">
-                        Email
-                    </Label>
-                </FormGroup>
-                {formik.touched.email && formik.errors.email && (
-                    <p>{formik.errors.email}</p>
-                )}
-                <FormGroup floating>
-                    <Input
-                        id="examplePassword"
-                        placeholder="Password"
-                        type="password"
-                        {...formik.getFieldProps("password")}
-                    />
-                    <Label for="examplePassword">
-                        Password
-                    </Label>
-                </FormGroup>
-                {formik.touched.password && formik.errors.password && (
-                    <p>{formik.errors.password}</p>
-                )}
-                <Button type='Submit' color='primary'>
-                    {isLoading ? <Spinner>
-                        Loading...
-                    </Spinner> : "Login"}
-                </Button>
-                <Link to={'/signup'}>Don't have an account?</Link>
-            </Form >
 
-        </div>
+            <FormGroup className={classes['loginForm']}>
+                <FormControl variant="standard">
+                    <TextField error={formik.errors.email && formik.touched.email} helperText={formik.errors.email} id="standard-basic" label="Email" variant="standard" placeholder='Email' {...formik.getFieldProps('email')} />
+                </FormControl>
+                <FormControl variant='standard'>
+                    <TextField type={showPassword ? 'text' : 'password'} error={formik.errors.password && formik.touched.password} helperText={formik.errors.password} id="standard-basic" label="Password" variant="standard" placeholder='Password'
+                        {...formik.getFieldProps('password')} InputProps={{
+                            endAdornment: (
+                                <InputAdornment position='end'>
+                                    <IconButton
+                                        aria-label='toggle password visibility'
+                                        onClick={handlePasswordVisiblity}>
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }} />
+                    <LoadingButton loading={isLoading} variant="contained" type='submit' onClick={formik.handleSubmit}>
+                        Login
+                    </LoadingButton>
+                    <Link to={'/signup'}>Don't have an account?</Link>
+                </FormControl>
+
+            </FormGroup>
+        </div >
     );
 }
 

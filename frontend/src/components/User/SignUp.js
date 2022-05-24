@@ -1,18 +1,24 @@
 import { useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
-import { Button, Form, FormGroup, Input, Label, Spinner } from 'reactstrap';
 import signUpSchema from '../../schema/signup.schema';
 import classes from './SignUp.module.css'
 import { signUp } from '../../api/signup';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
+import { FormControl, FormGroup, IconButton, InputAdornment, TextField, } from '@mui/material'
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Visibility from '@mui/icons-material/Visibility';
+import LoadingButton from '@mui/lab/LoadingButton';
 const SignUp = () => {
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
     const authSlice = useSelector(state => state.user)
     const { isLoggedIn } = authSlice
+    const [showPassword, setShowPassword] = useState(false)
 
+    const handlePasswordVisiblity = () => {
+        setShowPassword(state => !state)
+    }
     const formik = useFormik({
         initialValues: {
             username: '',
@@ -39,70 +45,47 @@ const SignUp = () => {
 
     return (
         <div>
-            <Form inline onSubmit={formik.handleSubmit} className={classes['signUpForm']}>
-                <FormGroup floating>
-                    <Input
-                        id="username"
-                        placeholder="Username"
-                        type="username"
-                        {...formik.getFieldProps('username')}
-                    />
-                    <Label for="username">
-                        Username
-                    </Label>
-                </FormGroup>
-                {formik.touched.username && formik.errors.username && (
-                    <p>{formik.errors.username}</p>
-                )}
-                <FormGroup floating>
-                    <Input
-                        id="email"
-                        placeholder="Email"
-                        type="email"
-                        {...formik.getFieldProps('email')}
-                    />
-                    <Label for="email">
-                        Email
-                    </Label>
-                </FormGroup>
-                {formik.touched.email && formik.errors.email && (
-                    <p>{formik.errors.email}</p>
-                )}
-                <FormGroup floating>
-                    <Input
-                        id="password"
-                        placeholder="Password"
-                        type="password"
-                        {...formik.getFieldProps("password")}
-                    />
-                    <Label for="password">
-                        Password
-                    </Label>
-                </FormGroup>
-                {formik.touched.password && formik.errors.password && (
-                    <p>{formik.errors.password}</p>
-                )}
-                <FormGroup floating>
-                    <Input
-                        id="confirmPassword"
-                        placeholder="Password"
-                        type="password"
-                        {...formik.getFieldProps("confirmPassword")}
-                    />
-                    <Label for="confirmPassword">
-                        Confirm Password
-                    </Label>
-                </FormGroup>
-                {formik.touched.confirmPassword && formik.errors.confirmPassword && (
-                    <p>{formik.errors.confirmPassword}</p>
-                )}
-                <Button color='primary'>
-                    {isLoading ? <Spinner>
-                        Loading...
-                    </Spinner> : "Sign Up"}
-                </Button>
-                <Link to={'/login'}>Already have an account?</Link>
-            </Form>
+            <FormGroup className={classes['signUpForm']}>
+                <FormControl variant="standard">
+                    <TextField error={formik.errors.username && formik.touched.username} helperText={formik.errors.username} id="standard-basic" label="Username" variant="standard" placeholder='Username' {...formik.getFieldProps('username')} />
+                </FormControl>
+                <FormControl variant="standard">
+                    <TextField error={formik.errors.email && formik.touched.email} helperText={formik.errors.email} id="standard-basic" label="Email" variant="standard" placeholder='Email' {...formik.getFieldProps('email')} />
+                </FormControl>
+                <FormControl>
+                    <TextField type={showPassword ? 'text' : 'password'} error={formik.errors.password && formik.touched.password} helperText={formik.errors.password} id="standard-basic" label="Password" variant="standard" placeholder='Password'
+                        {...formik.getFieldProps('password')} InputProps={{
+                            endAdornment: (
+                                <InputAdornment position='end'>
+                                    <IconButton
+                                        aria-label='toggle password visibility'
+                                        onClick={handlePasswordVisiblity}>
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }} />
+                </FormControl>
+                <FormControl variant='standard'>
+                    <TextField type={showPassword ? 'text' : 'password'} error={formik.errors.confirmPassword && formik.touched.confirmPassword} helperText={formik.errors.confirmPassword} id="standard-basic" label="Confirm Password" variant="standard" placeholder='Confirm Password'
+                        {...formik.getFieldProps('confirmPassword')} InputProps={{
+                            endAdornment: (
+                                <InputAdornment position='end'>
+                                    <IconButton
+                                        aria-label='toggle password visibility'
+                                        onClick={handlePasswordVisiblity}>
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }} />
+                </FormControl>
+                <LoadingButton loading={isLoading} variant="contained" type='submit' onClick={formik.handleSubmit}>
+                    Sign Up
+                </LoadingButton>
+                <Link to={'/signup'}>Don't have an account?</Link>
+
+            </FormGroup>
         </div>
     );
 }

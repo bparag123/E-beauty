@@ -1,9 +1,10 @@
+import { Grid } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import { getAllTreatments } from '../../store/custom-actions';
 import TreatmentItem from './TreatmentItem';
-import classes from './TreatmentList.module.css'
+import classes from './TreatmentList.module.css';
 
 const TreatmentList = () => {
 
@@ -21,16 +22,15 @@ const TreatmentList = () => {
     }, [dispatch, navigate, isLoggedIn])
 
     return (
-        <>
-            <div className={classes['treatment-list']}>
+        <div className={classes['treatment-wrapper']}>
+            <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                 {treatments.length === 0 ? "No Treatments Available" :
-                    treatments.map((ele, index) => <TreatmentItem data={ele} key={index} />)
+                    treatments.map((ele, index) => <Grid item xs={4}>
+                        <TreatmentItem data={ele} key={index} />
+                    </Grid>)
                 }
-            </div >
-        </>
-
-
-
+            </Grid>
+        </div>
     );
 }
 
