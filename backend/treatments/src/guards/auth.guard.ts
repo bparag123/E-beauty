@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Inject } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
-import { IS_PUBLIC_KEY } from '../decorators/allowUnauthorized.guard';
+import { IS_PUBLIC_KEY } from '../decorators/public.guard';
 
 /**
  * This is a custom guard which is responsible to take the token from the request and pass
@@ -17,6 +17,7 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    //Checking The Metadata is set to isPublic
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
     ]);

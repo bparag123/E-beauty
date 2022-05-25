@@ -11,9 +11,9 @@ import {
 import { TreatmentsService } from './treatments.service';
 import { CreateTreatmentDto } from './dto/create-treatment.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Public } from '../decorators/allowUnauthorized.guard';
+import { Public } from '../decorators/public.guard';
 import { Roles } from 'src/decorators/roles.decorators';
-import { Role } from 'src/role.enum';
+import { Role } from 'src/enums/role.enum';
 
 @Controller('treatment')
 export class TreatmentsController {
@@ -39,15 +39,13 @@ export class TreatmentsController {
     @Body() createTreatmentDto: CreateTreatmentDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    console.log(createTreatmentDto);
-    console.log(file);
     return this.treatmentsService.create(createTreatmentDto, file);
   }
 
+  //Making This Route Publically available by setting Metadata using Public
   @Public()
   @Get('')
   findAll() {
-    console.log('Getting All Treatments');
     return this.treatmentsService.findAll();
   }
 

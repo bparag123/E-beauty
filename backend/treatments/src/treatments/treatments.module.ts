@@ -32,6 +32,7 @@ config({ path: `${process.cwd()}/config/env/${process.env.NODE_ENV}.env` });
   controllers: [TreatmentsController],
   providers: [
     TreatmentsService,
+    //Here These two Providers are Global Guards for this Module
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
