@@ -8,7 +8,8 @@ import { toast } from 'react-toastify';
 import classes from './TreatmentDetail.module.css'
 import { ButtonBase, Grid, Paper, styled, Typography, TextField, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton';
-
+import { colors } from '../colors';
+console.log(colors);
 const TreatmentDetails = () => {
     console.log("Detail Component Rendered");
     const [treatmentData, setTreatmentData] = useState()
@@ -35,7 +36,7 @@ const TreatmentDetails = () => {
         setIsLoading(state => true)
         const result = await bookSlot({
             datetime: selectedTime,
-            teatmentId: treatmentData._id,
+            treatmentId: treatmentData._id,
             duration: treatmentData.duration
         })
         setIsLoading(state => false)
@@ -49,7 +50,7 @@ const TreatmentDetails = () => {
                 draggable: true,
                 progress: undefined,
             });
-            navigate('/treatments', { replace: true })
+            navigate('/dashboard', { replace: true })
         }
     }
 
@@ -91,87 +92,88 @@ const TreatmentDetails = () => {
 
     return (
         <div className={classes['detail-wrapper']} >
-            {treatmentData ? <Paper
-                sx={{
-                    p: 5,
-                    margin: 'auto',
-                    maxWidth: 500,
-                    flexGrow: 1,
-                    backgroundColor: (theme) =>
-                        theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-                }}
-            >
-                <Grid container spacing={2}>
-                    <Grid item>
-                        <ButtonBase sx={{ width: 128, height: 128 }}>
-                            <Img alt={treatmentData.name} src={treatmentData.images[0]} />
-                        </ButtonBase>
-                    </Grid>
-                    <Grid item xs={12} sm container>
-                        <Grid item xs container direction="column" spacing={2}>
-                            <Grid item xs>
-                                <Typography gutterBottom variant="subtitle1" component="div">
-                                    {treatmentData.name}
-                                </Typography>
-                                <Typography variant="body2" gutterBottom>
-                                    It will Take {treatmentData.duration * 60} Minutes
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    {slots ? isLoading ? <></> : <>
-                                        <Dialog
-                                            open={open}
-                                            onClose={handleClose}
-                                            aria-describedby="dialog-desc"
-                                        >
-                                            <DialogTitle>{"Available Slots"}</DialogTitle>
-                                            <DialogContent>
-                                                <DialogContentText id="dialog-desc">
-                                                    <FormControl>
-                                                        <FormLabel id="radio-group-label">Select a Slot to Book</FormLabel>
-
-                                                        {slots ? isLoading ? "Loading" :
-                                                            <RadioGroup aria-labelledby="radio-group-label" defaultValue="female" name="radio-buttons-group">
-                                                                {slots.available.map((ele, index) => {
-                                                                    return <FormControlLabel value={index} control={<Radio />} onChange={handleRadioChange} label={`${moment.utc(ele.start).format('hh:mm a')} - ${moment.utc(ele.end).format('hh:mm a')}`} />
-                                                                })}
-                                                            </RadioGroup> : "Loading"}
-                                                    </FormControl>
-
-                                                </DialogContentText>
-                                            </DialogContent>
-                                            <DialogActions>
-                                                <LoadingButton loading={isLoading} variant="contained" type='submit' onClick={handleSubmit}>
-                                                    Book
-                                                </LoadingButton>
-                                            </DialogActions>
-                                        </Dialog>
-
-                                    </> : ""}
-                                </Typography>
-                            </Grid>
-                            <Grid item sx>
-                                <TextField
-                                    id="date"
-                                    label="Check Availability On"
-                                    type="date"
-                                    defaultValue="2017-05-24"
-                                    sx={{ width: 220 }}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                    onChange={handleChange}
-                                />
-
-                            </Grid>
-                        </Grid>
+            {treatmentData ? <div>
+                <Paper
+                    sx={{
+                        p: 5,
+                        margin: 'auto',
+                        maxWidth: 500,
+                        flexGrow: 1,
+                        backgroundColor: (theme) =>
+                            theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+                    }}
+                >
+                    <Grid container spacing={2}>
                         <Grid item>
-                            <Typography variant="subtitle1" component="div">
-                                $ {treatmentData.charge}
-                            </Typography>
+                            <ButtonBase sx={{ width: 128, height: 128 }}>
+                                <Img alt={treatmentData.name} src={treatmentData.images[0]} />
+                            </ButtonBase>
+                        </Grid>
+                        <Grid item xs={12} sm container>
+                            <Grid item xs container direction="column" spacing={2}>
+                                <Grid item xs>
+                                    <Typography gutterBottom variant="subtitle1" component="div" color={colors.main}>
+                                        {treatmentData.name}
+                                    </Typography>
+                                    <Typography variant="body2" gutterBottom color={colors.muted}>
+                                        It will Take {treatmentData.duration * 60} Minutes
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        {slots ? isLoading ? <></> : <>
+                                            <Dialog
+                                                open={open}
+                                                onClose={handleClose}
+                                                aria-describedby="dialog-desc"
+                                            >
+                                                <DialogTitle color={colors.main}>{"Available Slots"}</DialogTitle>
+                                                <DialogContent>
+                                                    <DialogContentText id="dialog-desc">
+                                                        <FormControl>
+                                                            <FormLabel id="radio-group-label">Select a Slot to Book</FormLabel>
+
+                                                            {slots ? isLoading ? "Loading" :
+                                                                <RadioGroup aria-labelledby="radio-group-label" defaultValue="female" name="radio-buttons-group">
+                                                                    {slots.available.map((ele, index) => {
+                                                                        return <FormControlLabel value={index} control={<Radio />} onChange={handleRadioChange} label={`${moment.utc(ele.start).format('hh:mm a')} - ${moment.utc(ele.end).format('hh:mm a')}`} />
+                                                                    })}
+                                                                </RadioGroup> : "Loading"}
+                                                        </FormControl>
+
+                                                    </DialogContentText>
+                                                </DialogContent>
+                                                <DialogActions>
+                                                    <LoadingButton loading={isLoading} variant="contained" type='submit' onClick={handleSubmit}>
+                                                        Book
+                                                    </LoadingButton>
+                                                </DialogActions>
+                                            </Dialog>
+
+                                        </> : ""}
+                                    </Typography>
+                                </Grid>
+                                <Grid item sx>
+                                    <TextField
+                                        id="date"
+                                        label="Check Availability On"
+                                        type="date"
+                                        sx={{ width: 220 }}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        onChange={handleChange}
+                                    />
+
+                                </Grid>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant="subtitle1" component="div" color={colors.main}>
+                                    $ {treatmentData.charge}
+                                </Typography>
+                            </Grid>
                         </Grid>
                     </Grid>
-                </Grid>
-            </Paper> : ""
+                </Paper>
+            </div> : ""
             }
         </div >
     );

@@ -4,9 +4,11 @@
   width: 40%;
   margin: auto;
   padding: 1rem;
+  background-color: azure;
+  margin-top: 1rem;
 }
 
 .treatment_form_wrapper > div,
 .treatment_form_wrapper > button {
-  margin-top: 2rem;
+  margin-top: 1rem;
 }

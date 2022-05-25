@@ -23,3 +23,12 @@ export const bookSlot = async (data) => {
     })
     return response.data
 }
+
+export const getBookingOfUser = async () => {
+    const response = await instance({
+        method: 'get',
+        url: '',
+        headers: setHeaders()
+    })
+    return response.data
+}

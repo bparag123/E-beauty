@@ -15,8 +15,10 @@ export class BookingsService {
     return await this.bookingModel.deleteMany();
   }
 
-  async getAllBookings(email) {
-    return await this.bookingModel.find({ user: email });
+  async getAllBookingsOfUser(email) {
+    return await this.bookingModel
+      .find({ user: email })
+      .populate('treatmentId');
   }
   async bookSlot(data) {
     const { treatmentId, duration, datetime, user } = data;

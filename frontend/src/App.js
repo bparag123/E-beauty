@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import TreatmentDetails from './components/treatments/TreatmentDetails';
 import TreatmentForm from './components/treatments/TreatmentForm';
 import ResponsiveAppBar from './components/UI/Navbar';
+import Dashboard from './components/User/Dashboard';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Routes>
 
         <Route path="/" element={<Home />} />
+        <Route path='/dashboard' element={<Dashboard />} />
         <Route path="/treatments" element={<Outlet />}>
           <Route path=':id' element={<TreatmentDetails />} />
           <Route path='' element={<TreatmentList />} />

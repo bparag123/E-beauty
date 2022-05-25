@@ -29,6 +29,6 @@ export class BookingsController {
 
   @Get()
   getAllBookingsOfUser(@Req() req) {
-    return this.bookingService.getAllBookings(req.user.email);
+    return this.bookingService.getAllBookingsOfUser(req.user.email);
   }
 }

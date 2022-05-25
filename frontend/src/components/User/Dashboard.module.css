@@ -1,0 +1,11 @@
+.skeleton {
+  position: relative;
+  margin-top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0rem 2rem;
+}
+
+.booking_wrapper {
+  padding: 1rem;
+}

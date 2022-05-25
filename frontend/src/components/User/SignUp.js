@@ -44,16 +44,16 @@ const SignUp = () => {
     }, [isLoggedIn, navigate])
 
     return (
-        <div>
-            <FormGroup className={classes['signUpForm']}>
+        <div className={classes['signUpForm']}>
+            <FormGroup >
                 <FormControl variant="standard">
-                    <TextField error={formik.errors.username && formik.touched.username} helperText={formik.errors.username} id="standard-basic" label="Username" variant="standard" placeholder='Username' {...formik.getFieldProps('username')} />
+                    <TextField error={formik.errors.username && formik.touched.username} helperText={formik.errors.username} id="username" label="Username" variant="standard" placeholder='Username' {...formik.getFieldProps('username')} />
                 </FormControl>
                 <FormControl variant="standard">
-                    <TextField error={formik.errors.email && formik.touched.email} helperText={formik.errors.email} id="standard-basic" label="Email" variant="standard" placeholder='Email' {...formik.getFieldProps('email')} />
+                    <TextField error={formik.errors.email && formik.touched.email} helperText={formik.errors.email} id="email" label="Email" variant="standard" placeholder='Email' {...formik.getFieldProps('email')} />
                 </FormControl>
                 <FormControl>
-                    <TextField type={showPassword ? 'text' : 'password'} error={formik.errors.password && formik.touched.password} helperText={formik.errors.password} id="standard-basic" label="Password" variant="standard" placeholder='Password'
+                    <TextField type={showPassword ? 'text' : 'password'} error={formik.errors.password && formik.touched.password} helperText={formik.errors.password} id="password" label="Password" variant="standard" placeholder='Password'
                         {...formik.getFieldProps('password')} InputProps={{
                             endAdornment: (
                                 <InputAdornment position='end'>
@@ -67,7 +67,8 @@ const SignUp = () => {
                         }} />
                 </FormControl>
                 <FormControl variant='standard'>
-                    <TextField type={showPassword ? 'text' : 'password'} error={formik.errors.confirmPassword && formik.touched.confirmPassword} helperText={formik.errors.confirmPassword} id="standard-basic" label="Confirm Password" variant="standard" placeholder='Confirm Password'
+                    <TextField type={showPassword ? 'text' : 'password'} error={formik.errors.confirmPassword && formik.touched.confirmPassword} helperText={formik.errors.confirmPassword} id="confirm-password
+                    " label="Confirm Password" variant="standard" placeholder='Confirm Password'
                         {...formik.getFieldProps('confirmPassword')} InputProps={{
                             endAdornment: (
                                 <InputAdornment position='end'>

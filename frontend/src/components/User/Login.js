@@ -44,13 +44,13 @@ const Login = () => {
     }, [isLoggedIn, navigate])
 
     return (
-        <div >
-            <FormGroup className={classes['loginForm']}>
+        <div className={classes['loginForm']}>
+            <FormGroup >
                 <FormControl variant="standard">
-                    <TextField error={formik.errors.email && formik.touched.email} helperText={formik.errors.email} id="standard-basic" label="Email" variant="standard" placeholder='Email' {...formik.getFieldProps('email')} />
+                    <TextField error={formik.touched.email && formik.errors.email} helperText={formik.touched.email && formik.errors.email} id="standard-basic" label="Email" variant="standard" placeholder='Email' {...formik.getFieldProps('email')} />
                 </FormControl>
                 <FormControl variant='standard'>
-                    <TextField type={showPassword ? 'text' : 'password'} error={formik.errors.password && formik.touched.password} helperText={formik.errors.password} id="standard-basic" label="Password" variant="standard" placeholder='Password'
+                    <TextField type={showPassword ? 'text' : 'password'} error={formik.touched.password && formik.errors.password} helperText={formik.touched.password && formik.errors.password} id="standard-basic" label="Password" variant="standard" placeholder='Password'
                         {...formik.getFieldProps('password')} InputProps={{
                             endAdornment: (
                                 <InputAdornment position='end'>

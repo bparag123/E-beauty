@@ -206,7 +206,7 @@ const ResponsiveAppBar = () => {
                             onClose={handleCloseUserMenu}
                         >
                             <MenuItem onClick={handleCloseUserMenu}>
-                                <Typography textAlign="center">Profile</Typography>
+                                <Typography textAlign="center" component={Link} to="/dashboard">Dashboard</Typography>
                             </MenuItem>
                             <MenuItem onClick={handleCloseUserMenu}>
                                 <Typography textAlign="center" component={Button} onClick={logoutHandler}>Logout</Typography>

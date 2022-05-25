@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { Button, Card, CardBody, CardImg, CardSubtitle, CardText, CardTitle } from 'reactstrap';
+import { colors } from "../colors"
 
-import {  Typography, Button, Card, CardActionArea, CardMedia, CardContent, CardActions } from '@mui/material'
+import { Typography, Button, Card, CardActionArea, CardMedia, CardContent, CardActions } from '@mui/material'
 
 const TreatmentItem = ({ data }) => {
     const { name, images, charge, duration, _id } = data
@@ -10,7 +10,7 @@ const TreatmentItem = ({ data }) => {
     const viewHandler = () => {
         navigate(`${_id}`)
     }
-    
+
 
     return (
         <Card variant='elevation' elevation={10} sx={{ maxWidth: 345 }}>
@@ -22,13 +22,13 @@ const TreatmentItem = ({ data }) => {
                     alt={name}
                 />
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
+                    <Typography gutterBottom variant="h5" component="div" color={colors.main}>
                         {name}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" color={colors.muted} >
                         It will take around {duration * 60} minutes
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="h6" color={colors.main}>
                         $ {charge}
                     </Typography>
                 </CardContent>
