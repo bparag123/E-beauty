@@ -14,7 +14,6 @@ export class AppService {
    * This method signs the jwt token
    */
   getToken(data) {
-    console.log('Data during token generation', data);
     return {
       access_token: this.jwtService.sign({
         email: data.email,
@@ -35,7 +34,6 @@ export class AppService {
         password,
       }),
     );
-    console.log('Response From User Service', responseUser);
     return responseUser;
   }
 
