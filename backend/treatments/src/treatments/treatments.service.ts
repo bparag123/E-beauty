@@ -26,6 +26,7 @@ export class TreatmentsService {
   }
 
   async findAll() {
+    console.log('Find all runs');
     return await this.Treatment.find();
   }
 

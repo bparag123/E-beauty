@@ -14,6 +14,9 @@ export class Booking {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: () => Treatment })
   treatmentId: ObjectId;
+
+  @Prop({ type: String })
+  user: string;
 }
 
 export const BookingSchema = SchemaFactory.createForClass(Booking);

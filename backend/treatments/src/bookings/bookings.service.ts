@@ -15,16 +15,17 @@ export class BookingsService {
     return await this.bookingModel.deleteMany();
   }
 
-  async getAllBookings() {
-    return await this.bookingModel.find();
+  async getAllBookings(email) {
+    return await this.bookingModel.find({ user: email });
   }
   async bookSlot(data) {
-    const { treatmentId, duration, datetime } = data;
+    const { treatmentId, duration, datetime, user } = data;
     const d = new Date(datetime);
     return await this.bookingModel.create({
       treatmentId,
       duration,
       datetime: d,
+      user,
     });
   }
 

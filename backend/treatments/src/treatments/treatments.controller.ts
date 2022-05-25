@@ -6,13 +6,12 @@ import {
   Param,
   Post,
   UploadedFile,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { TreatmentsService } from './treatments.service';
 import { CreateTreatmentDto } from './dto/create-treatment.dto';
-import { AuthGuard } from '../guards/auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Public } from '../decorators/allowUnauthorized.guard';
 import { Roles } from 'src/decorators/roles.decorators';
 import { Role } from 'src/role.enum';
 
@@ -20,9 +19,8 @@ import { Role } from 'src/role.enum';
 export class TreatmentsController {
   constructor(private readonly treatmentsService: TreatmentsService) {}
 
-  @UseGuards(AuthGuard)
   @Roles(Role.Admin)
-  @Post()
+  @Post('')
   @UseInterceptors(
     FileInterceptor('file', {
       fileFilter: (req, file, cb) => {
@@ -37,7 +35,6 @@ export class TreatmentsController {
       },
     }),
   )
-  // @MessagePattern('createTreatment')
   create(
     @Body() createTreatmentDto: CreateTreatmentDto,
     @UploadedFile() file: Express.Multer.File,
@@ -47,25 +44,25 @@ export class TreatmentsController {
     return this.treatmentsService.create(createTreatmentDto, file);
   }
 
-  @UseGuards(AuthGuard)
-  @Get()
+  @Public()
+  @Get('')
   findAll() {
+    console.log('Getting All Treatments');
     return this.treatmentsService.findAll();
   }
 
-  @UseGuards(AuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.treatmentsService.findOne(id);
   }
 
-  @UseGuards(AuthGuard)
-  @Delete()
+  @Roles(Role.Admin)
+  @Delete('')
   deleteAll() {
     return this.treatmentsService.deleteAll();
   }
 
-  @UseGuards(AuthGuard)
+  @Roles(Role.Admin)
   @Delete(':id')
   deleteById(@Param('id') id: string) {
     return this.treatmentsService.deleteById(id);
