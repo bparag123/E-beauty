@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { AppBar, Toolbar, Container, Typography, Box, IconButton, Menu, MenuItem, Button, Tooltip, Avatar } from '@mui/material'
+import { AppBar, Toolbar, Container, Typography, Box, IconButton, Menu, MenuItem, Tooltip, Avatar } from '@mui/material'
 import { Link, useNavigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useSelector } from 'react-redux';
 import AdbIcon from '@mui/icons-material/Adb';
 import userSlice from '../../store/slices/userSlice';
 import { useDispatch } from 'react-redux';
-import classes from './Navbar.module.css';
 
 const ResponsiveAppBar = () => {
 
@@ -100,25 +99,35 @@ const ResponsiveAppBar = () => {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-
-                            {authSlice.isLoggedIn ? <Container className={classes["menu_wrapper"]}>
-                                <Typography component={Link} to="/treatments"
-                                    sx={navLinkStyles}>
-                                    Treatments
-                                </Typography>
-                                <Typography component={Link} to="/treatments/create" sx={navLinkStyles}>
-                                    Create Treatment
-                                </Typography>
-                            </Container> :
-                                <>
-                                    <Typography component={Link} to="/login"
+                            {authSlice.isLoggedIn ? [
+                                <MenuItem>
+                                    <Typography component={Link} to="/treatments"
                                         sx={navLinkStyles}>
-                                        Login
+                                        Treatments
                                     </Typography>
-                                    <Typography component={Link} to="/signup"
-                                        sx={navLinkStyles}>
-                                        Sign Up
-                                    </Typography></>}
+                                </MenuItem>,
+                                <MenuItem>
+                                    <Typography component={Link} to="/treatments/create" sx={navLinkStyles}>
+                                        Create Treatment
+                                    </Typography>
+                                </MenuItem>
+
+                            ] :
+                                [
+                                    <MenuItem>
+                                        <Typography component={Link} to="/login"
+                                            sx={navLinkStyles}>
+                                            Login
+                                        </Typography>
+                                    </MenuItem>,
+                                    <MenuItem>
+
+                                        <Typography component={Link} to="/signup"
+                                            sx={navLinkStyles}>
+                                            Sign Up
+                                        </Typography>
+                                    </MenuItem>
+                                ]}
 
 
                         </Menu>
@@ -206,17 +215,17 @@ const ResponsiveAppBar = () => {
                             onClose={handleCloseUserMenu}
                         >
                             <MenuItem onClick={handleCloseUserMenu}>
-                                <Typography textAlign="center" component={Link} to="/dashboard">Dashboard</Typography>
+                                <Typography textAlign="center" color="black" variant='subtitle1' sx={{ textDecoration: 'none' }} component={Link} to="/dashboard">Dashboard</Typography>
                             </MenuItem>
                             <MenuItem onClick={handleCloseUserMenu}>
-                                <Typography textAlign="center" component={Button} onClick={logoutHandler}>Logout</Typography>
+                                <Typography textAlign="center" variant='subtitle1' type="button" onClick={logoutHandler}>Logout</Typography>
                             </MenuItem>
 
                         </Menu>
                     </Box>}
                 </Toolbar>
             </Container>
-        </AppBar>
+        </AppBar >
     );
 };
 export default ResponsiveAppBar;

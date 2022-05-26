@@ -6,9 +6,10 @@ import { TreatmentSchema } from 'src/schemas/treatment.schema';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { config } from 'dotenv';
 import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { AllExceptionsFilter } from 'src/exception.filter';
 config({ path: `${process.cwd()}/config/env/${process.env.NODE_ENV}.env` });
 @Module({
   imports: [
@@ -40,6 +41,10 @@ config({ path: `${process.cwd()}/config/env/${process.env.NODE_ENV}.env` });
     {
       provide: APP_GUARD,
       useClass: RolesGuard,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
     },
   ],
 })

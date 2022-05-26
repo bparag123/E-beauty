@@ -4,9 +4,10 @@ import { BookingsController } from './bookings.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TreatmentSchema } from 'src/schemas/treatment.schema';
 import { BookingSchema } from 'src/schemas/booking.schema';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { AllExceptionsFilter } from 'src/exception.filter';
 
 @Module({
   imports: [
@@ -32,6 +33,10 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
     },
   ],
   controllers: [BookingsController],

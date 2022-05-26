@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { APP_FILTER } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { PassportModule } from '@nestjs/passport';
 import { configuration } from 'config/configuration';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AllExceptionsFilter } from './exception.filter';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { LocalStrategy } from './strategy/local.strategy';
 
@@ -35,6 +37,14 @@ import { LocalStrategy } from './strategy/local.strategy';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, JwtStrategy, LocalStrategy],
+  providers: [
+    AppService,
+    JwtStrategy,
+    LocalStrategy,
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    },
+  ],
 })
 export class AppModule {}

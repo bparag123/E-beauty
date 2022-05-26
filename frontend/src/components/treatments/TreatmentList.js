@@ -23,9 +23,9 @@ const TreatmentList = () => {
 
     return (
         <div className={classes['treatment-wrapper']}>
-            <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+            <Grid container spacing={1}>
                 {treatments.length === 0 ? "No Treatments Available" :
-                    treatments.map((ele, index) => <Grid item xs={4} key={index}>
+                    treatments.map((ele, index) => <Grid item xs={6} md={4} key={index}>
                         <TreatmentItem data={ele} />
                     </Grid>)
                 }

@@ -9,9 +9,11 @@ import { useNavigate, Link } from 'react-router-dom';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import LoadingButton from '@mui/lab/LoadingButton';
+import errorSlice from '../../store/slices/errorSlice';
+
 import { IconButton, InputAdornment, TextField } from '@mui/material'
 const Login = () => {
-    console.log("Component Rendered");
+    const errorData = useSelector(state => state.error)
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
     const authSlice = useSelector(state => state.user)
@@ -25,6 +27,7 @@ const Login = () => {
         onSubmit: (values) => {
             setIsLoading(state => true)
             dispatch(loginUser(values))
+            dispatch(errorSlice.actions.resolved({ status: 401 }))
             setIsLoading(state => false)
             navigate('/treatments', { replace: true })
         },
@@ -37,7 +40,6 @@ const Login = () => {
     }
 
     useEffect(() => {
-        console.log("Use Effect Run");
         if (isLoggedIn) {
             navigate('/treatments', { replace: true })
         }
@@ -45,6 +47,9 @@ const Login = () => {
 
     return (
         <div className={classes['loginForm']}>
+            {errorData.length > 0 ? errorData.map((err, i) => {
+                return <p>{err.message}</p>
+            }) : ''}
             <FormGroup >
                 <FormControl variant="standard">
                     <TextField error={formik.touched.email && formik.errors.email} helperText={formik.touched.email && formik.errors.email} id="standard-basic" label="Email" variant="standard" placeholder='Email' {...formik.getFieldProps('email')} />

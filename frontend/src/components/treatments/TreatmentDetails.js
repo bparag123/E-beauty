@@ -4,12 +4,12 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { bookSlot, checkAvailability } from '../../api/bookings';
 import * as moment from 'moment'
 import { getTreatmentById } from '../../api/treatments';
-import { toast } from 'react-toastify';
 import classes from './TreatmentDetail.module.css'
 import { ButtonBase, Grid, Paper, styled, Typography, TextField, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton';
 import { colors } from '../colors';
-console.log(colors);
+import { showToaster } from '../../utils/toaster';
+
 const TreatmentDetails = () => {
     console.log("Detail Component Rendered");
     const [treatmentData, setTreatmentData] = useState()
@@ -22,15 +22,7 @@ const TreatmentDetails = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (!selectedTime) {
-            toast.error('Please Select Slot!', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            showToaster("error", 'Please Select Slot!')
             return
         }
         setIsLoading(state => true)
@@ -41,19 +33,10 @@ const TreatmentDetails = () => {
         })
         setIsLoading(state => false)
         if (result) {
-            toast.success('Your Treatment is Booked!', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            showToaster("success", 'Your Treatment is Booked!')
             navigate('/dashboard', { replace: true })
         }
     }
-
 
     const handleChange = async (e) => {
         setIsLoading(state => true);
@@ -77,7 +60,10 @@ const TreatmentDetails = () => {
 
     const fetchTreatmentData = useCallback(async () => {
         const response = await getTreatmentById(id)
-        setTreatmentData(state => response[0])
+        if (response) {
+            setTreatmentData(state => response[0])
+        }
+
         console.log("Single Treatment", response[0]);
     }, [id])
 
